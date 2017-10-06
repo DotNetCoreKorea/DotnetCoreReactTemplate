@@ -38,13 +38,16 @@ module.exports = (env) => {
                     test: /\.css$/,
                     use: isDevBuild
                         ? ['style-loader', 'css-loader']
-                        : ExtractTextPlugin.extract({ use: 'css-loader?minimize' })
+                        : ExtractTextPlugin.extract({ use: ['css-loader?minimize', 'postcss-loader' ]})
                 },
                 {
                     test: /\.styl$/,
                     use: isDevBuild
                         ? ['style-loader', 'css-loader', 'stylus-loader']
-                        : ExtractTextPlugin.extract('style', 'css!stylus')
+                        : ExtractTextPlugin.extract({
+                             fallback: 'style-loader',
+                             use: ['css-loader', 'postcss-loader', 'stylus-loader']
+                        })
                 },
                 {
                     test: /\.(png|jpg|jpeg|gif|svg)$/,
