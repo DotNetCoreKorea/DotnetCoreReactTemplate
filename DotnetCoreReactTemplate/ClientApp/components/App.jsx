@@ -1,3 +1,5 @@
+import './App.styl'
+
 // Dependencies
 import React from 'react';
 

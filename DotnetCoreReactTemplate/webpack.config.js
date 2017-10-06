@@ -9,7 +9,7 @@ module.exports = (env) => {
     return [{
         stats: { modules: false },
         entry: { 'main': './ClientApp/boot.jsx' },
-        resolve: { extensions: ['.js', '.jsx' ] },
+        resolve: { extensions: ['.js', '.jsx', '.styl' ] },
         output: {
             path: path.join(__dirname, bundleOutputDir),
             filename: '[name].js',
@@ -34,8 +34,22 @@ module.exports = (env) => {
                     ],
                     exclude: /node_modules/
                 },
-                { test: /\.css$/, use: isDevBuild ? ['style-loader', 'css-loader'] : ExtractTextPlugin.extract({ use: 'css-loader?minimize' }) },
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+                {
+                    test: /\.css$/,
+                    use: isDevBuild
+                        ? ['style-loader', 'css-loader']
+                        : ExtractTextPlugin.extract({ use: 'css-loader?minimize' })
+                },
+                {
+                    test: /\.styl$/,
+                    use: isDevBuild
+                        ? ['style-loader', 'css-loader', 'stylus-loader']
+                        : ExtractTextPlugin.extract('style', 'css!stylus')
+                },
+                {
+                    test: /\.(png|jpg|jpeg|gif|svg)$/,
+                    use: 'url-loader?limit=25000'
+                }
             ]
         },
         plugins: [
